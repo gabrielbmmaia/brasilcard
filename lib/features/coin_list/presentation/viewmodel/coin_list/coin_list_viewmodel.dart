@@ -1,0 +1,41 @@
+import 'package:brasilcard/features/coin_list/data/models/coin_model.dart';
+import 'package:brasilcard/features/coin_list/repositories/coin_list_repository.dart';
+import 'package:mobx/mobx.dart';
+
+part 'coin_list_viewmodel.g.dart';
+
+class CoinListViewModel = ICoinListViewModel with _$CoinListViewModel;
+
+abstract class ICoinListViewModel with Store {
+  final ICoinListRepository repository;
+
+  ICoinListViewModel(this.repository);
+
+  @observable
+  ObservableList<CoinModel> cryptos = ObservableList<CoinModel>();
+
+  @observable
+  bool isLoading = false;
+
+  @observable
+  String? errorMessage;
+
+  @action
+  Future<void> getCryptos({String? query}) async {
+    isLoading = true;
+    errorMessage = null;
+
+    final data = await repository.getCoinList(query: query);
+
+    data.when(
+      success: (data) {
+        cryptos = ObservableList.of(data);
+        isLoading = false;
+      },
+      error: (error) {
+        errorMessage = error.message;
+        isLoading = false;
+      },
+    );
+  }
+}
