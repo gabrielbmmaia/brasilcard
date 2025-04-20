@@ -7,9 +7,9 @@ part 'coin_list_viewmodel.g.dart';
 class CoinListViewModel = ICoinListViewModel with _$CoinListViewModel;
 
 abstract class ICoinListViewModel with Store {
-  final ICoinListRepository repository;
+  final ICoinListRepository _repository;
 
-  ICoinListViewModel(this.repository);
+  ICoinListViewModel(this._repository);
 
   @observable
   ObservableList<CoinModel> cryptos = ObservableList<CoinModel>();
@@ -25,7 +25,7 @@ abstract class ICoinListViewModel with Store {
     isLoading = true;
     errorMessage = null;
 
-    final data = await repository.getCoinList(query: query);
+    final data = await _repository.getCoinList(query: query);
 
     data.when(
       success: (data) {
