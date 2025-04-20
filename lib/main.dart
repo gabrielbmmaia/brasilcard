@@ -1,5 +1,5 @@
 import 'package:brasilcard/core/di/core_di.dart';
-import 'package:brasilcard/features/home/presentation/home_page.dart';
+import 'package:brasilcard/core/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,11 +27,12 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: designSize,
       minTextAdapt: true,
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: appRouter,
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const HomePage(),
       ),
     );
   }
