@@ -1,6 +1,7 @@
 import 'package:brasilcard/core/di/core_di.dart';
 import 'package:brasilcard/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,12 +14,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    final designSize =
+        MediaQuery.of(context).size.shortestSide < 600
+            ? const Size(390, 844)
+            : const Size(768, 1024);
+
+    return ScreenUtilInit(
+      designSize: designSize,
+      minTextAdapt: true,
+      child: MaterialApp(
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        home: const HomePage(),
       ),
-      home: const HomePage(),
     );
   }
 }
