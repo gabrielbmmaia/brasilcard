@@ -3,6 +3,7 @@ import 'package:brasilcard/core/utils/debounce.dart';
 import 'package:brasilcard/core/utils/extensions/widget_extensions.dart';
 import 'package:brasilcard/core/widgets/ds_app_bar.dart';
 import 'package:brasilcard/core/widgets/ds_loading_indicator.dart';
+import 'package:brasilcard/features/coin_list/presentation/coin_list_router.dart';
 import 'package:brasilcard/features/coin_list/presentation/viewmodel/coin_list/coin_list_viewmodel.dart';
 import 'package:brasilcard/features/coin_list/presentation/widgets/coin_card.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DsAppBar(title: 'BrasilCard'),
+      appBar: DsAppBar(
+        title: 'BrasilCard',
+        actions: [
+          IconButton(
+            onPressed: () => CoinListRouters.navigateToFavoritePage(context),
+            icon: Icon(Icons.star),
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: Column(
         children: [
