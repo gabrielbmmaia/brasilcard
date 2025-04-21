@@ -1,8 +1,10 @@
 import 'package:brasilcard/core/di/core_di.dart';
 import 'package:brasilcard/core/utils/debounce.dart';
 import 'package:brasilcard/core/utils/extensions/widget_extensions.dart';
+import 'package:brasilcard/core/widgets/ds_app_bar.dart';
 import 'package:brasilcard/core/widgets/ds_loading_indicator.dart';
 import 'package:brasilcard/features/coin_list/presentation/viewmodel/coin_list/coin_list_viewmodel.dart';
+import 'package:brasilcard/features/coin_list/presentation/widgets/coin_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -28,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('BrasilCard')),
+      appBar: DsAppBar(title: 'BrasilCard'),
       backgroundColor: Colors.white,
       body: Column(
         children: [
@@ -50,17 +52,14 @@ class _HomePageState extends State<HomePage> {
                 }
 
                 return Visibility(
-                  visible: viewmodel.cryptos.isEmpty,
+                  visible: viewmodel.cryptos.isNotEmpty,
                   replacement: Text('Nenhuma criptomoeda encontrada'),
                   child: ListView.separated(
                     itemCount: viewmodel.cryptos.length,
                     separatorBuilder: (context, index) => Divider(),
                     itemBuilder: (context, index) {
                       final model = viewmodel.cryptos[index];
-                      return Text(
-                        model.name,
-                        style: TextStyle(color: Colors.black),
-                      );
+                      return CoinCard(coinModel: model);
                     },
                   ),
                 );
