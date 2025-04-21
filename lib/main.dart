@@ -1,5 +1,6 @@
 import 'package:brasilcard/core/di/core_di.dart';
 import 'package:brasilcard/core/router/app_router.dart';
+import 'package:brasilcard/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,9 +31,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         routerConfig: appRouter,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
       ),
     );
   }

@@ -12,7 +12,7 @@ class DSLoadingIndicator extends StatelessWidget {
         height: 36.h,
         width: 36.w,
         child: CircularProgressIndicator(
-          color: context.theme.tertiary,
+          color: context.colorTheme.tertiary,
           strokeWidth: 3,
         ),
       ),
