@@ -7,6 +7,7 @@ import 'package:brasilcard/features/coin_list/presentation/viewmodel/coin_list/c
 import 'package:brasilcard/features/coin_list/presentation/widgets/coin_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:brasilcard/core/utils/extensions/size_extensions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -56,7 +57,8 @@ class _HomePageState extends State<HomePage> {
                   replacement: Text('Nenhuma criptomoeda encontrada'),
                   child: ListView.separated(
                     itemCount: viewmodel.cryptos.length,
-                    separatorBuilder: (context, index) => Divider(),
+                    padding: EdgeInsets.all(16),
+                    separatorBuilder: (context, index) => 16.hg,
                     itemBuilder: (context, index) {
                       final model = viewmodel.cryptos[index];
                       return CoinCard(coinModel: model);
