@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:brasilcard/core/service/native_config.dart';
 import 'package:http/http.dart' as http;
 
 import '../error/exception.dart';
+import 'native_config.dart';
 
 abstract class IHttpClientService {
   Future<Map<String, dynamic>> get(String url);
