@@ -6,6 +6,8 @@ import 'package:brasilcard/features/coin_list/data/models/coin_model.dart';
 
 abstract class ICoinListRepository {
   ResultFuture<List<CoinModel>> getCoinList({String? query});
+
+  ResultFuture<List<CoinModel>> getCoinListFromIds({required List<String> ids});
 }
 
 class CoinListRepository implements ICoinListRepository {
@@ -17,6 +19,18 @@ class CoinListRepository implements ICoinListRepository {
   ResultFuture<List<CoinModel>> getCoinList({String? query}) async {
     try {
       final result = await remote.getCoinList(query: query);
+      return ResultSuccess(result);
+    } catch (e) {
+      return ResultError(BaseError(e.toString()));
+    }
+  }
+
+  @override
+  ResultFuture<List<CoinModel>> getCoinListFromIds({
+    required List<String> ids,
+  }) async {
+    try {
+      final result = await remote.getCoinListFromIds(coinIds: ids);
       return ResultSuccess(result);
     } catch (e) {
       return ResultError(BaseError(e.toString()));
