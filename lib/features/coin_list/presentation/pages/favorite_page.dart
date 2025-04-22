@@ -4,14 +4,13 @@ import 'package:brasilcard/core/utils/extensions/context_extension.dart';
 import 'package:brasilcard/core/utils/extensions/size_extensions.dart';
 import 'package:brasilcard/core/utils/extensions/text_style_extension.dart';
 import 'package:brasilcard/core/widgets/ds_app_bar.dart';
+import 'package:brasilcard/core/widgets/ds_dialogs.dart';
 import 'package:brasilcard/core/widgets/ds_error.dart';
 import 'package:brasilcard/core/widgets/ds_text.dart';
-import 'package:brasilcard/features/coin_list/presentation/utils/unfavorite_dialog.dart';
 import 'package:brasilcard/features/coin_list/presentation/viewmodels/coin_list_from_ids/coin_list_from_ids_viewmodel.dart';
 import 'package:brasilcard/features/coin_list/presentation/viewmodels/favorite_list/favorite_list_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/widgets/ds_loading_indicator.dart';
@@ -78,9 +77,11 @@ class _FavoritePageState extends State<FavoritePage> {
                         coinModel: model,
                         isFavorite: favoriteVM.isFavorite(model.id),
                         onFavoriteClick: () {
-                          UnfavoriteDialog.show(
+                          DSDialogs.showHighlightedText(
                             context,
-                            model: model,
+                            prefixText: 'Tem certeza que deseja apagar ',
+                            highlightedText: model.name,
+                            suffixText: ' dos favoritos?',
                             onConfirm: () {
                               favoriteVM.toggleFavorite(model.id);
                               coinListVM.removeCoin(model.id);
@@ -101,50 +102,14 @@ class _FavoritePageState extends State<FavoritePage> {
           return coinListVM.cryptos.isNotEmpty
               ? FloatingActionButton(
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        backgroundColor: context.colorTheme.primary,
-                        title: Text.rich(
-                          style: AppTextStyle.h6.regular.copyWith(
-                            color: context.colorTheme.onSecondary,
-                          ),
-                          textAlign: TextAlign.center,
-                          TextSpan(
-                            text: 'Tem certeza que deseja apagar ',
-                            children: [
-                              TextSpan(
-                                text: 'todos ',
-                                style: AppTextStyle.h6.bold,
-                              ),
-                              TextSpan(text: 'os favoritos?'),
-                            ],
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => context.pop(),
-                            child: DSText(
-                              'Cancelar',
-                              style: AppTextStyle.h6,
-                              color: context.colorTheme.onPrimary,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              favoriteVM.unFavoriteAll();
-                              coinListVM.clearCoins();
-                              context.pop();
-                            },
-                            child: DSText(
-                              'Confirmar',
-                              style: AppTextStyle.h6.semiBold,
-                              color: context.colorTheme.onPrimary,
-                            ),
-                          ),
-                        ],
-                      );
+                  DSDialogs.showHighlightedText(
+                    context,
+                    prefixText: 'Tem certeza que deseja apagar ',
+                    highlightedText: 'todos',
+                    suffixText: ' os favoritos?',
+                    onConfirm: () {
+                      favoriteVM.unFavoriteAll();
+                      coinListVM.clearCoins();
                     },
                   );
                 },

@@ -3,9 +3,11 @@ import 'package:brasilcard/core/theme/text_style.dart';
 import 'package:brasilcard/core/theme/viewmodel/theme_viewmodel.dart';
 import 'package:brasilcard/core/utils/debounce.dart';
 import 'package:brasilcard/core/utils/extensions/context_extension.dart';
+import 'package:brasilcard/core/utils/extensions/size_extensions.dart';
 import 'package:brasilcard/core/utils/extensions/text_style_extension.dart';
 import 'package:brasilcard/core/utils/extensions/widget_extensions.dart';
 import 'package:brasilcard/core/widgets/ds_app_bar.dart';
+import 'package:brasilcard/core/widgets/ds_dialogs.dart';
 import 'package:brasilcard/core/widgets/ds_error.dart';
 import 'package:brasilcard/core/widgets/ds_loading_indicator.dart';
 import 'package:brasilcard/core/widgets/ds_text.dart';
@@ -15,10 +17,7 @@ import 'package:brasilcard/features/coin_list/presentation/viewmodels/favorite_l
 import 'package:brasilcard/features/coin_list/presentation/widgets/coin_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:brasilcard/core/utils/extensions/size_extensions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../coin_list/presentation/utils/unfavorite_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -77,31 +76,33 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 4.w),
-            decoration: BoxDecoration(
-              color: context.colorTheme.secondary,
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: TextFormField(
-              controller: controller,
-              onChanged: (value) {
-                debounce(() => coinListVM.getCryptos(query: value));
-              },
-              cursorColor: context.colorTheme.onSurface,
-              style: AppTextStyle.h7.copyWith(
-                color: context.colorTheme.onSecondary,
+          Material(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 4.w),
+              decoration: BoxDecoration(
+                color: context.colorTheme.secondary,
+                borderRadius: BorderRadius.circular(100),
               ),
-              decoration: InputDecoration(
-                icon: Icon(Icons.search, color: context.colorTheme.onSurface),
-                hintText: 'Pesquise pelo nome ou símbolo',
-                hintStyle: AppTextStyle.h7.copyWith(
-                  color: context.colorTheme.onSurface,
+              child: TextFormField(
+                controller: controller,
+                onChanged: (value) {
+                  debounce(() => coinListVM.getCryptos(query: value));
+                },
+                cursorColor: context.colorTheme.onSurface,
+                style: AppTextStyle.h7.copyWith(
+                  color: context.colorTheme.onSecondary,
                 ),
-                border: InputBorder.none,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.search, color: context.colorTheme.onSurface),
+                  hintText: 'Pesquise pelo nome ou símbolo',
+                  hintStyle: AppTextStyle.h7.copyWith(
+                    color: context.colorTheme.onSurface,
+                  ),
+                  border: InputBorder.none,
+                ),
               ),
-            ),
-          ).all(16),
+            ).all(16),
+          ),
           Expanded(
             child: Observer(
               builder: (context) {
@@ -143,9 +144,12 @@ class _HomePageState extends State<HomePage> {
                                   model.id,
                                 );
                                 wasFavorite
-                                    ? UnfavoriteDialog.show(
+                                    ? DSDialogs.showHighlightedText(
                                       context,
-                                      model: model,
+                                      prefixText:
+                                          'Tem certeza que deseja apagar ',
+                                      highlightedText: model.name,
+                                      suffixText: ' dos favoritos?',
                                       onConfirm: () {
                                         favoriteListVM.toggleFavorite(model.id);
                                       },
