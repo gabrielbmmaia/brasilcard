@@ -9,10 +9,8 @@ part of 'coin_history_viewmodel.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$CoinHistoryViewModel on ICoinHistoryViewModel, Store {
-  late final _$historyAtom = Atom(
-    name: 'ICoinHistoryViewModel.history',
-    context: context,
-  );
+  late final _$historyAtom =
+  Atom(name: 'ICoinHistoryViewModel.history', context: context);
 
   @override
   ObservableList<GraphModel> get history {
@@ -27,10 +25,8 @@ mixin _$CoinHistoryViewModel on ICoinHistoryViewModel, Store {
     });
   }
 
-  late final _$isLoadingAtom = Atom(
-    name: 'ICoinHistoryViewModel.isLoading',
-    context: context,
-  );
+  late final _$isLoadingAtom =
+  Atom(name: 'ICoinHistoryViewModel.isLoading', context: context);
 
   @override
   bool get isLoading {
@@ -45,10 +41,8 @@ mixin _$CoinHistoryViewModel on ICoinHistoryViewModel, Store {
     });
   }
 
-  late final _$errorMessageAtom = Atom(
-    name: 'ICoinHistoryViewModel.errorMessage',
-    context: context,
-  );
+  late final _$errorMessageAtom =
+  Atom(name: 'ICoinHistoryViewModel.errorMessage', context: context);
 
   @override
   String? get errorMessage {
@@ -63,10 +57,8 @@ mixin _$CoinHistoryViewModel on ICoinHistoryViewModel, Store {
     });
   }
 
-  late final _$epochAtom = Atom(
-    name: 'ICoinHistoryViewModel.epoch',
-    context: context,
-  );
+  late final _$epochAtom =
+  Atom(name: 'ICoinHistoryViewModel.epoch', context: context);
 
   @override
   GraphEpoch get epoch {
@@ -81,16 +73,13 @@ mixin _$CoinHistoryViewModel on ICoinHistoryViewModel, Store {
     });
   }
 
-  late final _$fetchHistoryAsyncAction = AsyncAction(
-    'ICoinHistoryViewModel.fetchHistory',
-    context: context,
-  );
+  late final _$fetchHistoryAsyncAction =
+  AsyncAction('ICoinHistoryViewModel.fetchHistory', context: context);
 
   @override
   Future<void> fetchHistory({required String coinId, GraphEpoch? newEpoch}) {
-    return _$fetchHistoryAsyncAction.run(
-      () => super.fetchHistory(coinId: coinId, newEpoch: newEpoch),
-    );
+    return _$fetchHistoryAsyncAction
+        .run(() => super.fetchHistory(coinId: coinId, newEpoch: newEpoch));
   }
 
   @override
