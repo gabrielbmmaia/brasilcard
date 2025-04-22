@@ -40,13 +40,13 @@ class DsAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: AppTextStyle.h5.semiBold,
         color: context.colorTheme.tertiary,
       ),
-      actionsPadding: EdgeInsets.zero,
+      actionsPadding: EdgeInsets.only(right: 10.w),
       leading:
           showLeading
               ? IconButton(
                 onPressed: onLeadingTap ?? () => context.pop(),
                 icon: Icon(
-                  Icons.keyboard_arrow_left,
+                  Icons.arrow_back,
                   color: context.colorTheme.tertiary,
                   size: 24.r,
                 ),
