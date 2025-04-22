@@ -1,6 +1,7 @@
 import 'package:brasilcard/features/coin_list/data/models/coin_model.dart';
-import 'package:brasilcard/features/coin_list/repositories/coin_list_repository.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../../data/repositories/coin_list_repository.dart';
 
 part 'coin_list_viewmodel.g.dart';
 

@@ -1,5 +1,6 @@
-import 'package:brasilcard/features/coin_list/repositories/favorite_list_repository.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../../data/repositories/favorite_list_repository.dart';
 
 part 'favorite_list_viewmodel.g.dart';
 
