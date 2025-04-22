@@ -65,6 +65,20 @@ mixin _$CoinListFromIdsViewModel on ICoinListFromIdsViewModel, Store {
     return _$getCryptosAsyncAction.run(() => super.getCryptos(ids: ids));
   }
 
+  late final _$ICoinListFromIdsViewModelActionController =
+      ActionController(name: 'ICoinListFromIdsViewModel', context: context);
+
+  @override
+  void removeCoin(String coinId) {
+    final _$actionInfo = _$ICoinListFromIdsViewModelActionController
+        .startAction(name: 'ICoinListFromIdsViewModel.removeCoin');
+    try {
+      return super.removeCoin(coinId);
+    } finally {
+      _$ICoinListFromIdsViewModelActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

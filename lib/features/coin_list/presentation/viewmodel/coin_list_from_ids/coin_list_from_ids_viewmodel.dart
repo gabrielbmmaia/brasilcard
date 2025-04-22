@@ -39,4 +39,9 @@ abstract class ICoinListFromIdsViewModel with Store {
       },
     );
   }
+
+  @action
+  void removeCoin(String coinId) {
+    cryptos.removeWhere((coin) => coin.id == coinId);
+  }
 }
