@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 class MockHttpClientService extends Mock implements IHttpClientService {}
 
 void main() {
-  late SearchCoinsRemoteDatasource datasource;
+  late ISearchCoinsRemoteDatasource datasource;
   late MockHttpClientService mockHttp;
 
   setUp(() {
@@ -37,77 +37,81 @@ void main() {
   group('getCoinList', () {
     test(
       'should return list of CoinModel when response is successful with query',
-      () async {
+          () async {
         const query = 'bit';
+        // Mocking the correct endpoint with query parameter
         when(
-          () => mockHttp.get('/assets?search=$query'),
+              () => mockHttp.get('/assets?limit=100&offset=0&search=$query'),
         ).thenAnswer((_) async => fakeResponse);
 
         final result = await datasource.getCoinList(query: query);
 
         expect(result, isA<List<CoinModel>>());
         expect(result.first.name, 'Bitcoin');
-        verify(() => mockHttp.get('/assets?search=$query')).called(1);
+        verify(() => mockHttp.get('/assets?limit=100&offset=0&search=$query'))
+            .called(1);
       },
     );
 
     test(
       'should return list of CoinModel when response is successful without query',
-      () async {
+          () async {
+        // Mocking the correct endpoint without query parameter
         when(
-          () => mockHttp.get('/assets'),
+              () => mockHttp.get('/assets?limit=100&offset=0'),
         ).thenAnswer((_) async => fakeResponse);
 
         final result = await datasource.getCoinList();
 
         expect(result, isA<List<CoinModel>>());
-        verify(() => mockHttp.get('/assets')).called(1);
+        verify(() => mockHttp.get('/assets?limit=100&offset=0')).called(1);
       },
     );
 
     test('should throw ServerException when server returns error', () async {
       when(
-        () => mockHttp.get(any()),
+            () => mockHttp.get(any()),
       ).thenThrow(ServerException(message: '', statusCode: 500));
 
       expect(
-        () => datasource.getCoinList(query: 'btc'),
+            () => datasource.getCoinList(query: 'btc'),
         throwsA(isA<ServerException>()),
       );
-      verify(() => mockHttp.get('/assets?search=btc')).called(1);
+      verify(() => mockHttp.get('/assets?limit=100&offset=0&search=btc'))
+          .called(1);
     });
 
     test('should throw NoInternetException when no internet', () async {
       when(
-        () => mockHttp.get(any()),
+            () => mockHttp.get(any()),
       ).thenThrow(NoInternetException(message: ''));
 
       expect(
-        () => datasource.getCoinList(),
+            () => datasource.getCoinList(),
         throwsA(isA<NoInternetException>()),
       );
-      verify(() => mockHttp.get('/assets')).called(1);
+      verify(() => mockHttp.get('/assets?limit=100&offset=0')).called(1);
     });
 
     test('should throw UnknownException for unknown errors', () async {
       when(
-        () => mockHttp.get(any()),
+            () => mockHttp.get(any()),
       ).thenThrow(Exception('Something went wrong'));
 
       expect(() => datasource.getCoinList(), throwsA(isA<UnknownException>()));
-      verify(() => mockHttp.get('/assets')).called(1);
+      verify(() => mockHttp.get('/assets?limit=100&offset=0')).called(1);
     });
   });
 
   group('getCoinListFromIds', () {
     test(
       'should return list of CoinModel when response is successful',
-      () async {
+          () async {
         const ids = ['bitcoin', 'ethereum'];
         final endpoint = '/assets?ids=bitcoin,ethereum';
 
         when(
-          () => mockHttp.get(endpoint),
+              () => mockHttp.get(endpoint),
         ).thenAnswer((_) async => fakeResponse);
 
         final result = await datasource.getCoinListFromIds(coinIds: ids);
@@ -122,11 +126,11 @@ void main() {
       final endpoint = '/assets?ids=bitcoin';
 
       when(
-        () => mockHttp.get(endpoint),
+            () => mockHttp.get(endpoint),
       ).thenThrow(ServerException(message: '', statusCode: 500));
 
       expect(
-        () => datasource.getCoinListFromIds(coinIds: ids),
+            () => datasource.getCoinListFromIds(coinIds: ids),
         throwsA(isA<ServerException>()),
       );
       verify(() => mockHttp.get(endpoint)).called(1);
@@ -137,11 +141,11 @@ void main() {
       final endpoint = '/assets?ids=bitcoin';
 
       when(
-        () => mockHttp.get(endpoint),
+            () => mockHttp.get(endpoint),
       ).thenThrow(NoInternetException(message: ''));
 
       expect(
-        () => datasource.getCoinListFromIds(coinIds: ids),
+            () => datasource.getCoinListFromIds(coinIds: ids),
         throwsA(isA<NoInternetException>()),
       );
       verify(() => mockHttp.get(endpoint)).called(1);
@@ -152,11 +156,11 @@ void main() {
       final endpoint = '/assets?ids=bitcoin';
 
       when(
-        () => mockHttp.get(endpoint),
+            () => mockHttp.get(endpoint),
       ).thenThrow(Exception('Erro desconhecido'));
 
       expect(
-        () => datasource.getCoinListFromIds(coinIds: ids),
+            () => datasource.getCoinListFromIds(coinIds: ids),
         throwsA(isA<UnknownException>()),
       );
       verify(() => mockHttp.get(endpoint)).called(1);

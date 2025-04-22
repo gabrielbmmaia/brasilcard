@@ -9,7 +9,7 @@ import 'package:mocktail/mocktail.dart';
 class MockCoinListRepository extends Mock implements ICoinListRepository {}
 
 void main() {
-  late ICoinListViewModel viewModel;
+  late CoinListViewModel viewModel;
   late MockCoinListRepository mockRepository;
 
   setUp(() {
@@ -32,70 +32,49 @@ void main() {
       vwap24Hr: 45500,
       explorer: 'https://bitcoin.org',
     ),
-    CoinModel(
-      id: 'ethereum',
-      rank: '2',
-      symbol: 'ETH',
-      name: 'Ethereum',
-      supply: 115000000,
-      maxSupply: null,
-      marketCapUsd: 400000000000,
-      volumeUsd24Hr: 20000000000,
-      priceUsd: 3500,
-      changePercent24Hr: 1.78,
-      vwap24Hr: 3480,
-      explorer: 'https://ethereum.org',
-    ),
   ];
 
-  group('CoinListViewModel Tests', () {
-    test('should set isLoading true then false during getCryptos', () async {
-      when(
-        () => mockRepository.getCoinList(query: null),
-      ).thenAnswer((_) async => ResultSuccess(mockCoinList));
+  test('should append items to the paging controller on success', () async {
+    when(() =>
+        mockRepository.getCoinList(
+          query: any(named: 'query'),
+          limit: any(named: 'limit'),
+          offset: any(named: 'offset'),
+        )).thenAnswer((_) async => ResultSuccess(mockCoinList));
 
-      final future = viewModel.getCryptos();
+    viewModel.init();
 
-      expect(viewModel.isLoading, true);
+    final listener = viewModel.pagingController.firstPageKey;
+    viewModel.pagingController.notifyPageRequestListeners(listener);
 
-      await future;
+    await Future.delayed(Duration.zero);
 
-      expect(viewModel.isLoading, false);
-    });
+    expect(viewModel.pagingController.itemList?.length, mockCoinList.length);
+    expect(viewModel.pagingController.error, isNull);
+  });
 
-    test('should populate cryptos on successful getCryptos', () async {
-      when(
-        () => mockRepository.getCoinList(query: null),
-      ).thenAnswer((_) async => ResultSuccess(mockCoinList));
+  test('should set error on paging controller when repository fails', () async {
+    final error = BaseError('Erro simulado');
+    when(() =>
+        mockRepository.getCoinList(
+          query: any(named: 'query'),
+          limit: any(named: 'limit'),
+          offset: any(named: 'offset'),
+        )).thenAnswer((_) async => ResultError(error));
 
-      await viewModel.getCryptos();
+    viewModel.init();
 
-      expect(viewModel.cryptos.length, mockCoinList.length);
-      expect(viewModel.errorMessage, isNull);
-    });
+    viewModel.pagingController.notifyPageRequestListeners(0);
+    await Future.delayed(Duration.zero);
 
-    test('should set errorMessage on failed getCryptos', () async {
-      final error = BaseError('Failed to fetch coins');
-      when(
-        () => mockRepository.getCoinList(query: null),
-      ).thenAnswer((_) async => ResultError(error));
+    expect(viewModel.pagingController.error, error.message);
+    expect(viewModel.pagingController.itemList, isNull);
+  });
 
-      await viewModel.getCryptos();
+  test('should refresh paging controller and update query', () async {
+    viewModel.refreshList(query: 'eth');
 
-      expect(viewModel.errorMessage, error.message);
-      expect(viewModel.cryptos, isEmpty);
-      expect(viewModel.isLoading, false);
-    });
-
-    test('should pass query parameter to repository on getCryptos', () async {
-      const query = 'bit';
-      when(
-        () => mockRepository.getCoinList(query: query),
-      ).thenAnswer((_) async => ResultSuccess(mockCoinList));
-
-      await viewModel.getCryptos(query: query);
-
-      verify(() => mockRepository.getCoinList(query: query)).called(1);
-    });
+    expect(viewModel.currentQuery, 'eth');
+    expect(viewModel.pagingController.itemList, isNull);
   });
 }
