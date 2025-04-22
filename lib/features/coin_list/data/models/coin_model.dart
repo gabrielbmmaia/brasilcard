@@ -30,7 +30,20 @@ class CoinModel extends Equatable {
   final String explorer;
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [
+    id,
+    rank,
+    symbol,
+    name,
+    supply,
+    maxSupply,
+    marketCapUsd,
+    volumeUsd24Hr,
+    priceUsd,
+    changePercent24Hr,
+    vwap24Hr,
+    explorer,
+  ];
 
   Map<String, dynamic> toMap() {
     return {

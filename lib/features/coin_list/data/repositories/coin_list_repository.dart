@@ -5,7 +5,11 @@ import 'package:brasilcard/features/coin_list/data/datasources/remote/search_coi
 import 'package:brasilcard/features/coin_list/data/models/coin_model.dart';
 
 abstract class ICoinListRepository {
-  ResultFuture<List<CoinModel>> getCoinList({String? query});
+  ResultFuture<List<CoinModel>> getCoinList({
+    String? query,
+    int? limit = 100,
+    int? offset = 0,
+  });
 
   ResultFuture<List<CoinModel>> getCoinListFromIds({required List<String> ids});
 }
@@ -16,9 +20,17 @@ class CoinListRepository implements ICoinListRepository {
   final ISearchCoinsRemoteDatasource remote;
 
   @override
-  ResultFuture<List<CoinModel>> getCoinList({String? query}) async {
+  ResultFuture<List<CoinModel>> getCoinList({
+    String? query,
+    int? limit = 100,
+    int? offset = 0,
+  }) async {
     try {
-      final result = await remote.getCoinList(query: query);
+      final result = await remote.getCoinList(
+        query: query,
+        offset: offset,
+        limit: limit,
+      );
       return ResultSuccess(result);
     } catch (e) {
       return ResultError(BaseError(e.toString()));

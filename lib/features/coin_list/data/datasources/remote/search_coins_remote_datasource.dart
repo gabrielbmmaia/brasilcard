@@ -4,7 +4,11 @@ import 'package:brasilcard/features/coin_list/data/models/coin_model.dart';
 import '../../../../../core/services/http_service.dart';
 
 abstract class ISearchCoinsRemoteDatasource {
-  Future<List<CoinModel>> getCoinList({String? query});
+  Future<List<CoinModel>> getCoinList({
+    String? query,
+    int? limit = 100,
+    int? offset = 0,
+  });
 
   Future<List<CoinModel>> getCoinListFromIds({required List<String> coinIds});
 }
@@ -15,12 +19,16 @@ class SearchCoinsRemoteDatasource implements ISearchCoinsRemoteDatasource {
   final IHttpClientService _client;
 
   @override
-  Future<List<CoinModel>> getCoinList({String? query}) async {
+  Future<List<CoinModel>> getCoinList({
+    String? query,
+    int? limit = 100,
+    int? offset = 0,
+  }) async {
     try {
-      final endpoint =
-          query != null && query.isNotEmpty
-              ? '/assets?search=$query'
-              : '/assets';
+      String endpoint = '/assets?limit=$limit&offset=$offset';
+      if (query != null) {
+        endpoint += '&search=$query';
+      }
       final response = await _client.get(endpoint);
       final json = response['data'] as List<dynamic>;
       return json.map((e) => CoinModel.fromMap(e)).toList();

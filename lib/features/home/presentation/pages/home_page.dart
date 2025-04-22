@@ -4,7 +4,6 @@ import 'package:brasilcard/core/theme/viewmodel/theme_viewmodel.dart';
 import 'package:brasilcard/core/utils/debounce.dart';
 import 'package:brasilcard/core/utils/extensions/context_extension.dart';
 import 'package:brasilcard/core/utils/extensions/size_extensions.dart';
-import 'package:brasilcard/core/utils/extensions/text_style_extension.dart';
 import 'package:brasilcard/core/utils/extensions/widget_extensions.dart';
 import 'package:brasilcard/core/widgets/ds_app_bar.dart';
 import 'package:brasilcard/core/widgets/ds_dialogs.dart';
@@ -18,6 +17,9 @@ import 'package:brasilcard/features/coin_list/presentation/widgets/coin_card.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+import '../../../coin_list/data/models/coin_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,14 +40,22 @@ class _HomePageState extends State<HomePage> {
     coinListVM = injection<ICoinListViewModel>();
     favoriteListVM = injection<IFavoriteListViewModel>();
     themeVM = injection<IThemeViewModel>();
+
     favoriteListVM.loadFavorites();
-    coinListVM.getCryptos();
+    coinListVM.init();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    coinListVM.dispose();
+    super.dispose();
   }
 
   void refreshList() {
     favoriteListVM.loadFavorites();
-    coinListVM.getCryptos(query: controller.text.trim());
+    coinListVM.refreshList(query: controller.text.trim());
   }
 
   @override
@@ -86,7 +96,7 @@ class _HomePageState extends State<HomePage> {
               child: TextFormField(
                 controller: controller,
                 onChanged: (value) {
-                  debounce(() => coinListVM.getCryptos(query: value));
+                  debounce(() => coinListVM.refreshList(query: value));
                 },
                 cursorColor: context.colorTheme.onSurface,
                 style: AppTextStyle.h7.copyWith(
@@ -104,66 +114,93 @@ class _HomePageState extends State<HomePage> {
             ).all(16),
           ),
           Expanded(
-            child: Observer(
-              builder: (context) {
-                if (coinListVM.isLoading) {
-                  return DSLoadingIndicator();
-                }
-                if (coinListVM.errorMessage != null) {
-                  return DSError(
-                    title: coinListVM.errorMessage ?? 'Teve um error aqui',
-                    onTap: () => refreshList(),
-                  );
-                }
-
-                return Visibility(
-                  visible: coinListVM.cryptos.isNotEmpty,
-                  replacement: Center(
-                    child: DSText(
-                      'Nenhuma criptomoeda encontrada',
-                      style: AppTextStyle.h7.regular,
-                      color: context.colorTheme.onSecondary,
-                    ),
-                  ),
-                  child: RefreshIndicator(
-                    onRefresh: () async => refreshList(),
-                    color: context.colorTheme.tertiary,
-                    child: ListView.separated(
-                      itemCount: coinListVM.cryptos.length,
-                      padding: EdgeInsets.all(16.r),
-                      separatorBuilder: (context, index) => 16.hg,
-                      itemBuilder: (context, index) {
-                        final model = coinListVM.cryptos[index];
-                        return Observer(
-                          builder: (context) {
-                            return CoinCard(
-                              coinModel: model,
-                              isFavorite: favoriteListVM.isFavorite(model.id),
-                              onFavoriteClick: () {
-                                final wasFavorite = favoriteListVM.isFavorite(
-                                  model.id,
-                                );
-                                wasFavorite
-                                    ? DSDialogs.showHighlightedText(
-                                      context,
-                                      prefixText:
-                                          'Tem certeza que deseja apagar ',
-                                      highlightedText: model.name,
-                                      suffixText: ' dos favoritos?',
-                                      onConfirm: () {
-                                        favoriteListVM.toggleFavorite(model.id);
-                                      },
-                                    )
-                                    : favoriteListVM.toggleFavorite(model.id);
-                              },
+            child: RefreshIndicator(
+              onRefresh: () async => refreshList(),
+              color: context.colorTheme.tertiary,
+              child: PagedListView<int, CoinModel>.separated(
+                separatorBuilder: (context, index) => 16.hg,
+                pagingController: coinListVM.pagingController,
+                padding: EdgeInsets.all(16.r),
+                builderDelegate: PagedChildBuilderDelegate<CoinModel>(
+                  itemBuilder: (context, model, index) {
+                    return Observer(
+                      builder: (context) {
+                        return CoinCard(
+                          coinModel: model,
+                          isFavorite: favoriteListVM.isFavorite(model.id),
+                          onFavoriteClick: () {
+                            final wasFavorite = favoriteListVM.isFavorite(
+                              model.id,
                             );
+                            wasFavorite
+                                ? DSDialogs.showHighlightedText(
+                                  context,
+                                  prefixText: 'Tem certeza que deseja apagar ',
+                                  highlightedText: model.name,
+                                  suffixText: ' dos favoritos?',
+                                  onConfirm: () {
+                                    favoriteListVM.toggleFavorite(model.id);
+                                  },
+                                )
+                                : favoriteListVM.toggleFavorite(model.id);
                           },
                         );
                       },
-                    ),
-                  ),
-                );
-              },
+                    );
+                  },
+                  firstPageProgressIndicatorBuilder: (_) {
+                    return const DSLoadingIndicator();
+                  },
+                  newPageProgressIndicatorBuilder: (_) {
+                    return const DSLoadingIndicator();
+                  },
+                  firstPageErrorIndicatorBuilder: (context) {
+                    return DSError(
+                      title: 'Erro ao carregar dados',
+                      onTap: () => coinListVM.pagingController.refresh(),
+                    );
+                  },
+                  newPageErrorIndicatorBuilder: (context) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          DSText(
+                            'Erro ao carregar mais dados',
+                            style: AppTextStyle.h7,
+                            color: context.colorTheme.onPrimary,
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              coinListVM.pagingController
+                                  .retryLastFailedRequest();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: context.colorTheme.tertiary,
+                            ),
+                            child: DSText(
+                              'Tentar novamente',
+                              style: AppTextStyle.h7.copyWith(),
+                              color: context.colorTheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  noItemsFoundIndicatorBuilder: (_) {
+                    return Center(
+                      child: DSText(
+                        'Nenhuma criptomoeda encontrada',
+                        style: AppTextStyle.h7,
+                        color: context.colorTheme.onSecondary,
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           ),
         ],
