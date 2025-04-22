@@ -13,7 +13,7 @@ class CoinListRouters {
     ),
   ];
 
-  static void navigateToFavoritePage(BuildContext context) {
+  static Future<void> navigateToFavoritePage(BuildContext context) async {
     context.push(AppRoutes.favorite);
   }
 }
