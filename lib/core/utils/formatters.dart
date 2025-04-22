@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 
 class DSFormatter {
+  DSFormatter._();
+
   static String doubleToDollar(double value) {
     String symbol = '\$';
     String suffix = '';
@@ -24,5 +26,14 @@ class DSFormatter {
     );
 
     return formatter.format(shortValue) + suffix;
+  }
+
+  static String formatNumberBR(double value, {int decimalDigits = 2}) {
+    final formatter =
+        NumberFormat.decimalPattern('pt_BR')
+          ..minimumFractionDigits = decimalDigits
+          ..maximumFractionDigits = decimalDigits;
+
+    return formatter.format(value);
   }
 }
