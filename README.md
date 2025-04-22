@@ -22,7 +22,7 @@ Essas e outras práticas reforçam o compromisso do projeto com qualidade, segur
 
 Aqui você pode conferir uma visão geral de todas as telas do app:
 
-🛠️ _[Imagem em desenvolvimento]_
+![layout_geral](https://github.com/user-attachments/assets/c15fe9f6-f768-46bb-be38-22af9858a856)
 
 ## ⚙️ Funcionalidades
 
@@ -48,10 +48,6 @@ Aqui você pode conferir uma visão geral de todas as telas do app:
 - `Infinite Scroll Pagination`: paginação eficiente de grandes volumes de dados.
 - `Platform Channels`: ocultação da chave de API em código nativo.
 
-## 🧭 Navegação entre Telas
-
-🛠️ _[Imagem em desenvolvimento]_
-
 ## 📲 Funcionalidades por Tela
 
 ### 🏠 Home
@@ -59,19 +55,19 @@ Aqui você pode conferir uma visão geral de todas as telas do app:
 - Alteração entre temas claro e escuro.
 - Adição e remoção de favoritos com um toque.
 
-🛠️ _[Imagem em desenvolvimento]_
+![layout_home](https://github.com/user-attachments/assets/68d7f019-9362-4ef2-a84b-c586f5e3afe4)
 
 ### 📊 Detalhes da Criptomoeda
 - Exibição completa de informações da moeda selecionada.
 - Histórico de preços filtrado por: 30 dias, 90 dias, 180 dias, 1 ano ou 2 anos.
 
-🛠️ _[Imagem em desenvolvimento]_
+![layout_details](https://github.com/user-attachments/assets/88b1c717-160a-449f-8743-7b0266fa75f9)
 
 ### ⭐ Favoritos
 - Acompanhamento de todas as moedas favoritas.
 - Opções para remover individualmente ou todas criptomoedas.
 
-🛠️ _[Imagem em desenvolvimento]_
+![favorite_layout](https://github.com/user-attachments/assets/f40f0141-efc3-4ff0-8b28-d979544f7c64)
 
 ## 🔗 API Utilizada (22/04/2025)
 
