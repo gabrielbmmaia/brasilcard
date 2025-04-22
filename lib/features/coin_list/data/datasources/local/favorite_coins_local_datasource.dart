@@ -12,7 +12,10 @@ abstract class IFavoriteCoinsLocalDatasource {
 }
 
 class FavoriteCoinsLocalDatasource implements IFavoriteCoinsLocalDatasource {
-  final box = Hive.box<String>(HiveKeys.favoriteCoins);
+  FavoriteCoinsLocalDatasource([Box<String>? box])
+    : _box = box ?? Hive.box<String>(HiveKeys.favoriteCoins);
+
+  final Box<String> _box;
 
   static Future<void> init() async {
     await Hive.openBox<String>(HiveKeys.favoriteCoins);
@@ -20,19 +23,19 @@ class FavoriteCoinsLocalDatasource implements IFavoriteCoinsLocalDatasource {
 
   @override
   Future<void> saveFavoriteCoin({required String coinId}) async {
-    if (!box.containsKey(coinId)) {
-      await box.put(coinId, coinId);
+    if (!_box.containsKey(coinId)) {
+      await _box.put(coinId, coinId);
     }
   }
 
   @override
-  List<String> getFavoriteCoinsId() => box.values.toList();
+  List<String> getFavoriteCoinsId() => _box.values.toList();
 
   @override
   Future<void> deleteFavoriteCoin({required String coinId}) async {
-    await box.delete(coinId);
+    await _box.delete(coinId);
   }
 
   @override
-  Future<void> clearFavoriteCoins() async => await box.clear();
+  Future<void> clearFavoriteCoins() async => await _box.clear();
 }

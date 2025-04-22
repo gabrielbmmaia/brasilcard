@@ -29,6 +29,8 @@ dependencies:
   intl: ^0.20.2
   shared_preferences: ^2.5.3
   fl_chart: ^0.71.0
+  mocktail: ^1.0.4
+  test: ^1.25.15
 
 dev_dependencies:
   flutter_test:
