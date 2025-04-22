@@ -30,6 +30,9 @@ class CoinListRepository implements ICoinListRepository {
     required List<String> ids,
   }) async {
     try {
+      if (ids.isEmpty) {
+        return ResultSuccess([]);
+      }
       final result = await remote.getCoinListFromIds(coinIds: ids);
       return ResultSuccess(result);
     } catch (e) {
