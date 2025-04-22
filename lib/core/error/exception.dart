@@ -8,6 +8,9 @@ class ServerException extends Equatable implements Exception {
 
   @override
   List<dynamic> get props => [message, statusCode];
+
+  @override
+  String toString() => '$statusCode, message: $message';
 }
 
 class UnknownException extends Equatable implements Exception {
@@ -17,4 +20,7 @@ class UnknownException extends Equatable implements Exception {
 
   @override
   List<dynamic> get props => [message];
+
+  @override
+  String toString() => message;
 }
