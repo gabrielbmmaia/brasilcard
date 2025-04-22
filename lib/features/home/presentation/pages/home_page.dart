@@ -10,8 +10,8 @@ import 'package:brasilcard/core/widgets/ds_error.dart';
 import 'package:brasilcard/core/widgets/ds_loading_indicator.dart';
 import 'package:brasilcard/core/widgets/ds_text.dart';
 import 'package:brasilcard/features/coin_list/presentation/coin_list_router.dart';
-import 'package:brasilcard/features/coin_list/presentation/viewmodel/coin_list/coin_list_viewmodel.dart';
-import 'package:brasilcard/features/coin_list/presentation/viewmodel/favorite_list/favorite_list_viewmodel.dart';
+import 'package:brasilcard/features/coin_list/presentation/viewmodels/coin_list/coin_list_viewmodel.dart';
+import 'package:brasilcard/features/coin_list/presentation/viewmodels/favorite_list/favorite_list_viewmodel.dart';
 import 'package:brasilcard/features/coin_list/presentation/widgets/coin_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             onPressed: () {
-              CoinListRouters.navigateToFavoritePage(
+              CoinListRouter.navigateToFavoritePage(
                 context,
               ).then((_) => favoriteListVM.loadFavorites());
             },

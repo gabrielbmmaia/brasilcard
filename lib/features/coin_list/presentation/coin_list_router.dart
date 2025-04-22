@@ -3,8 +3,8 @@ import 'package:brasilcard/features/coin_list/presentation/pages/favorite_page.d
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class CoinListRouters {
-  CoinListRouters._();
+class CoinListRouter {
+  CoinListRouter._();
 
   static final coinListRoutes = <GoRoute>[
     GoRoute(

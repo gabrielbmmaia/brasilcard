@@ -26,6 +26,8 @@ class SearchCoinsRemoteDatasource implements ISearchCoinsRemoteDatasource {
       return json.map((e) => CoinModel.fromMap(e)).toList();
     } on ServerException {
       rethrow;
+    } on NoInternetException {
+      rethrow;
     } catch (e) {
       throw UnknownException(message: e.toString());
     }
@@ -41,6 +43,8 @@ class SearchCoinsRemoteDatasource implements ISearchCoinsRemoteDatasource {
       final json = response['data'] as List<dynamic>;
       return json.map((e) => CoinModel.fromMap(e)).toList();
     } on ServerException {
+      rethrow;
+    } on NoInternetException {
       rethrow;
     } catch (e) {
       throw UnknownException(message: e.toString());
