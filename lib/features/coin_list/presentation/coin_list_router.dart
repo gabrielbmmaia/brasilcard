@@ -9,12 +9,11 @@ class CoinListRouters {
   static final coinListRoutes = <GoRoute>[
     GoRoute(
       path: AppRoutes.favorite,
-      name: 'favorite',
       builder: (context, state) => const FavoritePage(),
     ),
   ];
 
   static void navigateToFavoritePage(BuildContext context) {
-    context.goNamed('favorite');
+    context.push(AppRoutes.favorite);
   }
 }

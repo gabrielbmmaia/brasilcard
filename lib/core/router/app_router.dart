@@ -12,7 +12,6 @@ final GoRouter appRouter = GoRouter(
     // TODO Criar tela de detalhes
     GoRoute(
       path: AppRoutes.details,
-      name: 'profile',
       builder: (context, state) => Container(),
     ),
   ],

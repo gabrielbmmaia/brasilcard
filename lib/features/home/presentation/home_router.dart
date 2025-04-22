@@ -8,7 +8,6 @@ class HomeRouters {
   static final homeRoutes = <GoRoute>[
     GoRoute(
       path: AppRoutes.home,
-      name: 'home',
       builder: (context, state) => const HomePage(),
     ),
   ];
