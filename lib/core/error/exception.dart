@@ -24,3 +24,15 @@ class UnknownException extends Equatable implements Exception {
   @override
   String toString() => message;
 }
+
+class NoInternetException extends Equatable implements Exception {
+  const NoInternetException({required this.message});
+
+  final String message;
+
+  @override
+  List<dynamic> get props => [message];
+
+  @override
+  String toString() => message;
+}

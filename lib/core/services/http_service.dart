@@ -28,7 +28,8 @@ class HttpClientService implements IHttpClientService {
         mappedUrl += '${separator}apiKey=$apiKey';
       }
 
-      final response = await client.get(Uri.parse(mappedUrl));
+      final uri = Uri.parse(mappedUrl);
+      final response = await client.get(uri);
       if (response.statusCode != HttpStatus.ok) {
         throw ServerException(
           message: response.body,
@@ -37,10 +38,12 @@ class HttpClientService implements IHttpClientService {
       }
 
       return jsonDecode(response.body);
+    } on SocketException {
+      throw NoInternetException(message: 'Sem conexão com a internet');
     } on ServerException {
       rethrow;
     } catch (e) {
-      throw UnknownException(message: e.toString());
+      throw UnknownException(message: 'Erro desconhecido');
     }
   }
 }
