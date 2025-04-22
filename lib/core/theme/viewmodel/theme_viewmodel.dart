@@ -1,5 +1,5 @@
-import 'package:mobx/mobx.dart';
 import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'theme_viewmodel.g.dart';
@@ -7,6 +7,7 @@ part 'theme_viewmodel.g.dart';
 class ThemeViewModel = IThemeViewModel with _$ThemeViewModel;
 
 abstract class IThemeViewModel with Store {
+  final SharedPreferences _sharedPreferences;
   static const _key = 'isDarkMode';
 
   @observable
@@ -15,8 +16,8 @@ abstract class IThemeViewModel with Store {
   @computed
   ThemeMode get themeMode => isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-  IThemeViewModel() {
-    _loadTheme();
+  IThemeViewModel(this._sharedPreferences) {
+    loadTheme();
   }
 
   @action
@@ -25,13 +26,9 @@ abstract class IThemeViewModel with Store {
     _saveTheme(isDarkMode);
   }
 
-  Future<void> _loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    isDarkMode = prefs.getBool(_key) ?? false;
-  }
+  void loadTheme() => isDarkMode = _sharedPreferences.getBool(_key) ?? false;
 
   Future<void> _saveTheme(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_key, value);
+    await _sharedPreferences.setBool(_key, value);
   }
 }
