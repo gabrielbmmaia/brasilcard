@@ -29,7 +29,7 @@ class DSError extends StatelessWidget {
             style: AppTextStyle.h6.bold,
             color: context.colorTheme.onSecondary,
           ),
-          8.hg,
+          16.hg,
           InkWell(
             onTap: onTap,
             borderRadius: BorderRadius.circular(16.r),

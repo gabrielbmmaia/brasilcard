@@ -26,7 +26,10 @@ class CoinCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: context.colorTheme.secondary),
+      decoration: BoxDecoration(
+        color: context.colorTheme.secondary,
+        borderRadius: BorderRadius.circular(8.r),
+      ),
       padding: EdgeInsets.all(16.r),
       child: Column(
         children: [

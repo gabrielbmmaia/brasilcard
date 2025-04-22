@@ -59,7 +59,10 @@ class _HomePageState extends State<HomePage> {
             builder:
                 (context) => IconButton(
                   onPressed: () => themeVM.toggleTheme(),
-                  icon: Icon(Icons.dark_mode),
+                  icon: Icon(
+                    themeVM.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                    color: context.colorTheme.tertiary,
+                  ),
                 ),
           ),
           IconButton(
@@ -68,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                 context,
               ).then((_) => favoriteListVM.loadFavorites());
             },
-            icon: Icon(Icons.star),
+            icon: Icon(Icons.star, color: context.colorTheme.tertiary),
           ),
         ],
       ),
