@@ -1,4 +1,3 @@
-import 'package:brasilcard/core/services/hive_service.dart';
 import 'package:brasilcard/features/coin_list/di/coin_list_di.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -10,13 +9,12 @@ final injection = GetIt.instance;
 class CoreDI {
   CoreDI._();
 
-  static Future<void> init() async {
-    injection
-      ..registerFactory<http.Client>(() => http.Client())
-      ..registerFactory<IHttpClientService>(
-        () => HttpClientService(injection()),
-      )
-      ..registerFactory<IHiveService>(() => HiveService());
-    await DICoinList.inject();
+  static void init() async {
+    DICoinList.inject();
+    injection.registerFactory<http.Client>(() => http.Client());
+
+    injection.registerFactory<IHttpClientService>(
+      () => HttpClientService(injection()),
+    );
   }
 }

@@ -1,35 +1,38 @@
 import 'package:brasilcard/core/services/hive_keys.dart';
-
-import '../../../../../core/services/hive_service.dart';
+import 'package:hive/hive.dart';
 
 abstract class IFavoriteCoinsLocalDatasource {
-  Future<void> saveFavoriteCoins(String coinId);
+  Future<void> saveFavoriteCoin({required String coinId});
 
-  Future<List<String>> getFavoriteCoinsId();
+  List<String> getFavoriteCoinsId();
 
-  Future<void> deleteFavoriteCoin(String coinId);
+  Future<void> deleteFavoriteCoin({required String coinId});
+
+  Future<void> clearFavoriteCoins();
 }
 
 class FavoriteCoinsLocalDatasource implements IFavoriteCoinsLocalDatasource {
-  const FavoriteCoinsLocalDatasource(this._hiveService);
+  final box = Hive.box<String>(HiveKeys.favoriteCoins);
 
-  final HiveService _hiveService;
-
-  @override
-  Future<void> saveFavoriteCoins(String coinId) async {
-    await _hiveService.add<String>(
-      boxName: HiveKeys.favoriteCoins,
-      value: coinId,
-    );
+  static Future<void> init() async {
+    await Hive.openBox<String>(HiveKeys.favoriteCoins);
   }
 
   @override
-  Future<List<String>> getFavoriteCoinsId() async {
-    return await _hiveService.getAll<String>(boxName: HiveKeys.favoriteCoins);
+  Future<void> saveFavoriteCoin({required String coinId}) async {
+    if (!box.containsKey(coinId)) {
+      await box.put(coinId, coinId);
+    }
   }
 
   @override
-  Future<void> deleteFavoriteCoin(String coinId) async {
-    await _hiveService.delete(boxName: HiveKeys.favoriteCoins, key: coinId);
+  List<String> getFavoriteCoinsId() => box.values.toList();
+
+  @override
+  Future<void> deleteFavoriteCoin({required String coinId}) async {
+    await box.delete(coinId);
   }
+
+  @override
+  Future<void> clearFavoriteCoins() async => await box.clear();
 }
