@@ -15,7 +15,7 @@ class AppTheme {
       tertiary: AppColors.tertiary,
       onPrimary: AppColors.black,
       onSecondary: AppColors.black,
-      onSurface: AppColors.black,
+      onSurface: AppColors.black38,
     ),
     scaffoldBackgroundColor: AppColors.lightPrimary,
   );
@@ -31,7 +31,7 @@ class AppTheme {
       error: Colors.red,
       onPrimary: AppColors.white,
       onSecondary: AppColors.white,
-      onSurface: AppColors.white,
+      onSurface: AppColors.white30,
     ),
     scaffoldBackgroundColor: AppColors.darkPrimary,
   );
