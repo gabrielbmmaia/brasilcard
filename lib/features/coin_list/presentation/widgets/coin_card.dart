@@ -12,9 +12,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CoinCard extends StatelessWidget {
-  const CoinCard({required this.coinModel, super.key});
+  const CoinCard({
+    required this.coinModel,
+    required this.isFavorite,
+    required this.onFavoriteClick,
+    super.key,
+  });
 
   final CoinModel coinModel;
+  final bool isFavorite;
+  final VoidCallback onFavoriteClick;
 
   @override
   Widget build(BuildContext context) {
@@ -82,38 +89,55 @@ class CoinCard extends StatelessWidget {
           ),
           16.hg,
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                child: Column(
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    DSText(
-                      'Preço',
-                      style: AppTextStyle.h9.regular,
-                      color: context.colorTheme.onSecondary,
+                    Flexible(
+                      child: Column(
+                        children: [
+                          DSText(
+                            'Preço',
+                            style: AppTextStyle.h9.regular,
+                            color: context.colorTheme.onSecondary,
+                          ),
+                          DSText(
+                            DSFormatter.doubleToDollar(coinModel.priceUsd),
+                            style: AppTextStyle.h8.semiBold,
+                            color: context.colorTheme.onSecondary,
+                          ),
+                        ],
+                      ),
                     ),
-                    DSText(
-                      DSFormatter.doubleToDollar(coinModel.priceUsd),
-                      style: AppTextStyle.h8.semiBold,
-                      color: context.colorTheme.onSecondary,
+                    Flexible(
+                      child: Column(
+                        children: [
+                          DSText(
+                            'Volume (24 h)',
+                            style: AppTextStyle.h9.regular,
+                            color: context.colorTheme.onSecondary,
+                          ),
+                          DSText(
+                            DSFormatter.doubleToDollar(coinModel.volumeUsd24Hr),
+                            style: AppTextStyle.h8.semiBold,
+                            color: context.colorTheme.onSecondary,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              Flexible(
-                child: Column(
-                  children: [
-                    DSText(
-                      'Volume (24 h)',
-                      style: AppTextStyle.h9.regular,
-                      color: context.colorTheme.onSecondary,
-                    ),
-                    DSText(
-                      DSFormatter.doubleToDollar(coinModel.volumeUsd24Hr),
-                      style: AppTextStyle.h8.semiBold,
-                      color: context.colorTheme.onSecondary,
-                    ),
-                  ],
+              16.wt,
+              IconButton(
+                onPressed: onFavoriteClick,
+                icon: Icon(
+                  Icons.star_rounded,
+                  color:
+                      isFavorite
+                          ? context.colorTheme.tertiary
+                          : context.colorTheme.primary,
                 ),
               ),
             ],
