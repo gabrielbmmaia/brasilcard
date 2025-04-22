@@ -20,13 +20,13 @@ class CoinModel extends Equatable {
   final String rank;
   final String symbol;
   final String name;
-  final String supply;
-  final String maxSupply;
-  final String marketCapUsd;
+  final double supply;
+  final double? maxSupply;
+  final double marketCapUsd;
   final double volumeUsd24Hr;
   final double priceUsd;
   final double changePercent24Hr;
-  final String vwap24Hr;
+  final double vwap24Hr;
   final String explorer;
 
   @override
@@ -55,13 +55,14 @@ class CoinModel extends Equatable {
       rank: map['rank'] ?? '',
       symbol: map['symbol'] ?? '',
       name: map['name'] ?? '',
-      supply: map['supply'] ?? '',
-      maxSupply: map['maxSupply'] ?? '',
-      marketCapUsd: map['marketCapUsd'] ?? '',
+      supply: double.tryParse(map['supply'] ?? '0') ?? 0.0,
+      maxSupply: double.tryParse(map['maxSupply'] ?? '0'),
+      marketCapUsd: double.tryParse(map['marketCapUsd'] ?? '0') ?? 0.0,
       volumeUsd24Hr: double.tryParse(map['volumeUsd24Hr'] ?? '0') ?? 0.0,
       priceUsd: double.tryParse(map['priceUsd'] ?? '0') ?? 0.0,
-      changePercent24Hr: double.tryParse(map['changePercent24Hr'] ?? '0') ?? 0.0,
-      vwap24Hr: map['vwap24Hr'] ?? '',
+      changePercent24Hr:
+          double.tryParse(map['changePercent24Hr'] ?? '0') ?? 0.0,
+      vwap24Hr: double.tryParse(map['vwap24Hr'] ?? '0') ?? 0.0,
       explorer: map['explorer'] ?? '',
     );
   }
