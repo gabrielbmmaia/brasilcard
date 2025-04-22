@@ -101,6 +101,7 @@ class _FavoritePageState extends State<FavoritePage> {
         builder: (_) {
           return coinListVM.cryptos.isNotEmpty
               ? FloatingActionButton(
+                backgroundColor: context.colorTheme.secondary,
                 onPressed: () {
                   DSDialogs.showHighlightedText(
                     context,
@@ -113,7 +114,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     },
                   );
                 },
-                child: Icon(Icons.delete),
+                child: Icon(Icons.delete, color: context.colorTheme.tertiary),
               )
               : SizedBox.shrink();
         },

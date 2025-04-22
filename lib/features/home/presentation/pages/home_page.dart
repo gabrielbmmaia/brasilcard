@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
               child: PagedListView<int, CoinModel>.separated(
                 separatorBuilder: (context, index) => 16.hg,
                 pagingController: coinListVM.pagingController,
-                padding: EdgeInsets.all(16.r),
+                padding: EdgeInsets.only(left: 16.w, bottom: 16.h, right: 16.w),
                 builderDelegate: PagedChildBuilderDelegate<CoinModel>(
                   itemBuilder: (context, model, index) {
                     return Observer(
