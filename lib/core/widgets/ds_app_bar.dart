@@ -4,6 +4,7 @@ import 'package:brasilcard/core/utils/extensions/text_style_extension.dart';
 import 'package:brasilcard/core/widgets/ds_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class DsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DsAppBar({
@@ -11,12 +12,14 @@ class DsAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.centerTitle = false,
     super.key,
-  }) : onLeadingTap = null;
+  }) : showLeading = false,
+       onLeadingTap = null;
 
   final String title;
   final List<Widget>? actions;
   final VoidCallback? onLeadingTap;
   final bool centerTitle;
+  final bool showLeading;
 
   const DsAppBar.withBackButton({
     required this.title,
@@ -24,7 +27,7 @@ class DsAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.centerTitle = false,
     super.key,
-  });
+  }) : showLeading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +40,11 @@ class DsAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: AppTextStyle.h5.semiBold,
         color: context.colorTheme.tertiary,
       ),
+      actionsPadding: EdgeInsets.zero,
       leading:
-          onLeadingTap != null
+          showLeading
               ? IconButton(
-                onPressed: onLeadingTap,
+                onPressed: onLeadingTap ?? () => context.pop(),
                 icon: Icon(
                   Icons.keyboard_arrow_left,
                   color: context.colorTheme.tertiary,
