@@ -41,8 +41,8 @@ class DSError extends StatelessWidget {
               ),
               child: DSText(
                 'Tentar Novamente',
-                style: AppTextStyle.h7.regular,
-                color: context.colorTheme.onSecondary,
+                style: AppTextStyle.h7.bold,
+                color: context.colorTheme.primary,
               ),
             ),
           ),
