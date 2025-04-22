@@ -80,6 +80,17 @@ mixin _$CoinListFromIdsViewModel on ICoinListFromIdsViewModel, Store {
   }
 
   @override
+  void clearCoins() {
+    final _$actionInfo = _$ICoinListFromIdsViewModelActionController
+        .startAction(name: 'ICoinListFromIdsViewModel.clearCoins');
+    try {
+      return super.clearCoins();
+    } finally {
+      _$ICoinListFromIdsViewModelActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 cryptos: ${cryptos},
