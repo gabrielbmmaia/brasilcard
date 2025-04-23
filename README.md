@@ -74,6 +74,14 @@ Aqui você pode conferir uma visão geral de todas as telas do app:
 - [📘 CoinCap API Documentation](https://pro.coincap.io/api-docs)
 
 ## 🚀 Como Rodar o Projeto
+1. Acesse a aba **`Releases`** localizada no lado direito da página (ou abaixo do **README**, se você estiver acessando pelo celular).
+2. Clique na versão chamada **`first_version`**.
+3. Você verá três arquivos listados — clique em **`app-release.apk`**.
+4. Em seguida, clique em **`Baixar`** para iniciar o download.
+
+> ⚠️ **Atenção:** Caso seu celular não permita instalar apps de fontes externas (fora da Play Store), será necessário ativar essa opção nas configurações do dispositivo.
+
+Depois disso, é só abrir o aplicativo e aproveitar! 😄
 
 ## 🎥 Showcase do Aplicativo
 
