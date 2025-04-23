@@ -9,14 +9,14 @@ Além disso, foi implementado o padrão arquitetural **MVVM**, atendendo aos req
 Essas e outras práticas reforçam o compromisso do projeto com qualidade, segurança e performance, mesmo em contextos de menor complexidade.
 
 ## 📌 Índice
-- [🎨 Layouts do Projeto](#🎨-layouts-do-projeto)
-- [⚙️ Funcionalidades](#⚙️-funcionalidades)
-- [🛠️ Tecnologias e Técnicas](#🛠️-tecnologias-e-técnicas)
-- [🧭 Navegação entre Telas](#🧭-navegação-entre-telas)
-- [📲 Funcionalidades por Tela](#📲-funcionalidades-por-tela)
-- [🔗 API Utilizada](#🔗-api-utilizada)
-- [🚀 Como Rodar o Projeto](#🚀-como-rodar-o-projeto)
-- [🎥 Showcase do Aplicativo](#🎥-showcase-do-aplicativo)
+- [🎨 Layouts do Projeto](#layouts-do-projeto)
+- [⚙️ Funcionalidades](#funcionalidades)
+- [🛠️ Tecnologias e Técnicas](#tecnologias-e-técnicas)
+- [📲 Funcionalidades por Tela](#funcionalidades-por-tela)
+- [📱 Responsividade](#responsividade)
+- [🔗 API Utilizada](#api-utilizada)
+- [🚀 Como Rodar o Projeto](#como-rodar-o-projeto)
+- [🎥 Showcase do Aplicativo](#showcase-do-aplicativo)
 
 ## 🎨 Layouts do Projeto
 
@@ -68,6 +68,12 @@ Aqui você pode conferir uma visão geral de todas as telas do app:
 - Opções para remover individualmente ou todas criptomoedas.
 
 ![favorite_layout](https://github.com/user-attachments/assets/f40f0141-efc3-4ff0-8b28-d979544f7c64)
+
+## 📱 Responsividade
+
+O aplicativo foi projetado para oferecer uma **experiência consistente e agradável em diferentes tamanhos de tela**, desde smartphones compactos até dispositivos maiores.
+
+![responsividade](https://github.com/user-attachments/assets/fb07579a-8a7f-4f70-bf33-2627d9d0dbee)
 
 ## 🔗 API Utilizada (22/04/2025)
 
