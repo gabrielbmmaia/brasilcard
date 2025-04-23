@@ -12,7 +12,7 @@ if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 
-val apiKey = "\"${localProperties.getProperty("API_KEY") ?: ""}\""
+val apiKey = localProperties.getProperty("API_KEY") ?: ""
 
 android {
     namespace = "com.example.brasilcard"
@@ -35,7 +35,7 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
-        buildConfigField("String", "API_KEY", apiKey)
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
     buildFeatures {
